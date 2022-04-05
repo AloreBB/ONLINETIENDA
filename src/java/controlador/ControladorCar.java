@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import static java.util.Collections.list;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -61,7 +63,7 @@ public class ControladorCar extends HttpServlet {
             case "Comprar":
                 int idP = Integer.parseInt(request.getParameter("id"));
                 beansP = rDAOP.listarId(idP);
-                item=+1;
+                item+=1;
                 Carrito car = new Carrito();
                 car.setItem(item);
                 car.setIdProducto(beansP.getId());
@@ -79,22 +81,60 @@ public class ControladorCar extends HttpServlet {
                 break;
             
             case "AgregarCarrito":
+                int pos = 0;
+                int cantidad = 1;
+                
                 idP = Integer.parseInt(request.getParameter("id"));
                 beansP = rDAOP.listarId(idP);
-                item=+1;
-                car = new Carrito();
-                car.setItem(item);
-                car.setIdProducto(beansP.getId());
-                car.setNombres(beansP.getNombre());
-                car.setDescripcion(beansP.getDescripcion());
-                car.setPrecioCompra(beansP.getCosto());
-                car.setCantidad(beansP.getCantidad());
-                car.setSubTotal(cantidad*beansP.getCosto());
-                listaCarrito.add(car);
+                
+                if (listaCarrito.size()>0) {
+                    
+                    for (int i = 0; i < listaCarrito.size(); i++) {
+                        if (idP == listaCarrito.get(i).getIdProducto()) {
+                            pos=i;
+                        }
+                        // Dentro de este if se hace la suma del total en productos agregados. Siendo el mismo producto
+                        if (idP == listaCarrito.get(pos).getIdProducto()) {
+                            cantidad = listaCarrito.get(pos).getCantidad()+cantidad;
+                            double subTotal = listaCarrito.get(pos).getPrecioCompra()*cantidad; 
+                            listaCarrito.get(pos).setCantidad(cantidad);
+                            listaCarrito.get(pos).setSubTotal(subTotal);
+                        }
+                        else{
+                            item+=1;
+                            car = new Carrito();
+                            car.setItem(item);
+                            car.setIdProducto(beansP.getId());
+                            car.setNombres(beansP.getNombre());
+                            car.setDescripcion(beansP.getDescripcion());
+                            car.setPrecioCompra(beansP.getCosto());
+                            car.setCantidad(beansP.getCantidad());
+                            car.setSubTotal(cantidad*beansP.getCosto());
+                            listaCarrito.add(car);
+                        }
+                    }
+                    
+                    
+                }
+                else {
+                    item+=1;
+                    car = new Carrito();
+                    car.setItem(item);
+                    car.setIdProducto(beansP.getId());
+                    car.setNombres(beansP.getNombre());
+                    car.setDescripcion(beansP.getDescripcion());
+                    car.setPrecioCompra(beansP.getCosto());
+                    car.setCantidad(beansP.getCantidad());
+                    car.setSubTotal(cantidad*beansP.getCosto());
+                    listaCarrito.add(car);
+                }
+                
+                
                 
                 
                 request.setAttribute("contador", listaCarrito.size());
                 request.getRequestDispatcher("index.jsp").forward(request, response);
+                
                 
                 break;
                 

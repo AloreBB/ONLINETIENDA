@@ -39,12 +39,12 @@
                     
                     <c:forEach var="car" items="${carrito}">
                     <tr>
+                        <td>${car.getItem()}</td>
                         <td>${car.getNombres()}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>${car.getDescripcion()}</td>
+                        <td>${car.getPrecioCompra()}</td>
+                        <td> <input type="number" value="${car.getCantidad()}"></td>
+                        <td>${car.getSubTotal()}</td>
                         <td></td> 
                     </tr>
                     </c:forEach>
