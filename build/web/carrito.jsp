@@ -43,9 +43,15 @@
                         <td>${car.getNombres()}</td>
                         <td>${car.getDescripcion()}</td>
                         <td>${car.getPrecioCompra()}</td>
-                        <td> <input type="number" value="${car.getCantidad()}"></td>
+                        <td> 
+                            <input type="number" id="cantidad" value="${car.getCantidad()}" class="form-control text-center" min="1"></td>
+                            <input type="hidden" id="idPro" value="${car.getIdProducto()}"></td>
                         <td>${car.getSubTotal()}</td>
-                        <td></td> 
+                        <td>
+                            <input type="hidden" id="idp" value="${car.getIdProducto()}">
+                            <a href="ControladorCar?action=Delete&id=${car.getIdProducto()}" id="btnDelete">Eliminar</a>
+                            
+                        </td> 
                     </tr>
                     </c:forEach>
                     
@@ -61,7 +67,7 @@
                         </div>
                         <div class="card-body">
                             <label>Subtotal<i class="fas fa-cart-plus">(<label style="color: fuchsia">${contador}</label>)</i></label>
-                            <input type="text" readonly="" class="form-control">
+                            <input value="$.${totalPagar}" type="text" readonly="" class="form-control">
                         </div>
                         <div class="card-footer">
                             <a href="#" class="btn btn-info btn-block">Realizar pago</a>
@@ -74,7 +80,8 @@
 
 
         <%@include file="commons/pie.jsp" %>
-
-
+        <script src="js/funciones.js" type="text/javascript"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="js/funciones.js" type="text/javascript"></script>
     </body>
 </html>

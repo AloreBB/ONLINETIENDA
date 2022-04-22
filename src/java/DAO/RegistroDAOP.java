@@ -143,6 +143,28 @@ public class RegistroDAOP {
         return p;
     }
     
+    public Carrito listarIdP(int id){
+        String sql = "select * from productos where id ="+id;
+        Carrito p = new Carrito();
+        try {
+            cnx = con.ConexBD();
+            ps = cnx.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            while (rs.next()) {                
+                p.setIdProducto(rs.getInt(1));
+                p.setNombres(rs.getString(2));
+                p.setDescripcion(rs.getString(3));
+                p.setPrecioCompra(rs.getFloat(4));
+                p.setCantidad(rs.getInt(5));
+                p.setSubTotal(rs.getDouble(6));
+                
+                
+            }
+        } catch (Exception e) {
+        }
+        return p;
+    }
     //======================================listar Producto=========================================================
     
     
